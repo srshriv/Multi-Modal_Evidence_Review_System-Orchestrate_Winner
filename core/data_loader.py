@@ -178,7 +178,7 @@ class DatasetRepository:
 
         Important: resizing must not destroy the signal we actually need to
         detect -- stock-photo watermarks, small in-image text, fine scratches.
-        1024px on the longest side comfortably preserves watermark text and
+        896px on the longest side comfortably preserves watermark text and
         sticky-note handwriting (verified visually during development against
         dataset/images/sample/case_008 and case_020), while cutting token cost
         roughly in proportion to the area reduction versus the original.

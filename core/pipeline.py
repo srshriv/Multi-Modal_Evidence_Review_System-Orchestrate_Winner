@@ -4,7 +4,7 @@ loop, the deterministic safety gate, and a final fallback so a single failed
 claim never crashes a full batch run.
 """
 
-from core.agent import run_agent_on_claim
+from core.agent import AgentRunResult, run_agent_on_claim
 from core.data_loader import ClaimRow, DatasetRepository
 from core.safety_gate import apply_safety_gate
 
@@ -35,10 +35,11 @@ def _fallback_row(claim: ClaimRow, reason: str) -> dict:
     }
 
 
-def process_claim(provider, claim: ClaimRow, repository: DatasetRepository) -> dict:
+def process_claim(provider, claim: ClaimRow, repository: DatasetRepository) -> tuple[dict, AgentRunResult]:
     """
-    Returns a full output row dict (input columns + validated output columns),
-    ready to write to CSV. Never raises -- failures degrade to a flagged
+    Returns (output_row, agent_result): the full output row dict (input columns
+    + validated output columns) ready to write to CSV, paired with the
+    AgentRunResult for logging. Never raises -- failures degrade to a flagged
     fallback row so a batch run completes even if one claim's API call breaks.
     """
     user_history = repository.get_user_history(claim.user_id)

@@ -1,13 +1,11 @@
 """
 Metrics for scoring predictions against the labeled dataset/sample_claims.csv.
 
-Deliberately field-by-field rather than one blended "accuracy" number, because
-the May rubric's failure-mode example was specifically about justification
-quality being decoupled from label correctness ("agents that return the
-correct action... but with a justification that's empty, generic, or
-contradicts their own status. We cap these at ~70 even when the action is
-right."). We want our own eval to be able to catch that same failure mode in
-our system before HackerRank's judge does.
+Deliberately field-by-field rather than one blended "accuracy" number, to catch
+a known failure mode in agent evaluation: a correct label paired with a
+justification that is empty, generic, or contradicts the agent's own status.
+Field-by-field scoring plus a separate justification-groundedness check surfaces
+that decoupling, rather than letting a right label mask a useless justification.
 """
 
 from dataclasses import dataclass, field

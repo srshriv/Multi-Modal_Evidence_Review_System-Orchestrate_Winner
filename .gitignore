@@ -1,8 +1,20 @@
+# Secrets — never commit real keys
 .env
+
+# Local dataset (HackerRank's data is not redistributable; supply your own)
+dataset/
+output.csv
+sample_output.csv
+
+# Evaluation run artifacts
+evaluation/.checkpoint_*.json
+
+# Python
 __pycache__/
 *.pyc
+*.egg-info/
 .venv/
 venv/
-*.egg-info/
+
+# OS
 .DS_Store
-evaluation/.checkpoint_*.json

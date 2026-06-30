@@ -8,8 +8,7 @@ Usage:
     python main.py --input ../dataset/sample_claims.csv --output sample_output.csv
 
 Reads ANTHROPIC_API_KEY / OPENAI_API_KEY from the environment (via .env, loaded
-through python-dotenv). Never hardcode keys -- see AGENTS.md and the project
-README for why.
+through python-dotenv). Never hardcode keys.
 """
 
 import argparse

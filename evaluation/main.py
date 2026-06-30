@@ -218,7 +218,7 @@ def estimate_full_test_cost(provider_name: str, sample_score, test_row_count: in
     return {"input_tokens": est_in, "output_tokens": est_out, "cost_usd": cost}
 
 
-def write_report(scores: dict, predictions_by_strategy: dict, test_row_count: int, chosen_strategy: str, attempted_providers: list):
+def write_report(scores: dict, test_row_count: int, chosen_strategy: str, attempted_providers: list):
     provider_display = {
         "anthropic": "Anthropic (Claude, vision)",
         "openai": "OpenAI (GPT-4o, vision)",
@@ -406,7 +406,7 @@ def write_report(scores: dict, predictions_by_strategy: dict, test_row_count: in
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--provider", choices=["anthropic", "openai", "groq", "gemini", "both", "all"], default="all")
+    parser.add_argument("--provider", choices=["anthropic", "openai", "groq", "gemini", "all"], default="all")
     parser.add_argument(
         "--no-resume", action="store_true",
         help="Disable checkpoint resume and force every row to be (re-)run from scratch, "
@@ -431,7 +431,7 @@ def main():
     expected_rows = [c.expected for c in claims]
     test_claims = repository.load_claims_csv("claims.csv", has_labels=False)
 
-    if args.provider in ("both", "all"):
+    if args.provider == "all":
         providers_to_run = ["anthropic", "openai", "groq", "gemini"]
     else:
         providers_to_run = [args.provider]
@@ -461,11 +461,10 @@ def main():
     print()
 
     scores = {}
-    predictions_by_strategy = {}
     for provider_name in providers_to_run:
         print(f"\n[evaluation] running strategy: {provider_name} on sample_claims.csv ({len(claims)} rows)")
         try:
-            score, predictions = run_strategy(
+            score, _ = run_strategy(
                 provider_name, repository, claims, expected_rows,
                 resume=resume, token_budget=args.token_budget,
             )
@@ -478,7 +477,6 @@ def main():
             print(f"[evaluation] skipping '{provider_name}' for this comparison.")
             continue
         scores[provider_name] = score
-        predictions_by_strategy[provider_name] = predictions
         print(format_score_summary(score))
 
     if not scores:
@@ -494,7 +492,7 @@ def main():
     )
     print(f"\n[evaluation] selected strategy for output.csv: {chosen}")
 
-    write_report(scores, predictions_by_strategy, len(test_claims), chosen, providers_to_run)
+    write_report(scores, len(test_claims), chosen, providers_to_run)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
 Anthropic provider for the claim-review agent loop.
 
-Wraps the Claude Messages API tool-calling loop behind the same interface as
-the OpenAI provider (see openai_provider.py), so core/agent.py can drive either
-without knowing which one it's talking to. This is what makes the two-strategy
-comparison in evaluation/ a fair, apples-to-apples comparison rather than two
-differently-shaped pipelines.
+Wraps the Claude Messages API tool-calling loop behind the shared provider
+interface (see the other files in this package), so core/agent.py can drive any
+provider without knowing which one it's talking to. This is what makes the
+multi-provider comparison in evaluation/ a fair, apples-to-apples comparison
+rather than differently-shaped pipelines.
 """
 
 import os

@@ -2,9 +2,9 @@
 Prompt construction for the claim-review agent.
 
 The system prompt encodes the role, the decision policy, and explicit refusal/
-override conditions -- the things the May rubric's "Prompt and tool craft"
-dimension explicitly looks for: "role assignment, constraint setting,
-structured output, and refusal conditions."
+override conditions -- standard prompt-engineering practice for agentic tasks:
+clear role assignment, constraint setting, structured output, and explicit
+refusal conditions.
 
 The adversarial guidance here is grounded in patterns actually observed in
 dataset/sample_claims.csv during development (see evaluation/evaluation_report.md
